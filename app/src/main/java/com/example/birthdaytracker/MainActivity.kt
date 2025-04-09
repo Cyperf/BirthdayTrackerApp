@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BirthdayTrackerTheme {
                     Greeting()
+
                 }
             }
         }
