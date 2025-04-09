@@ -71,7 +71,7 @@ fun LogIn(initialLogInState: Boolean, navController: NavHostController) {
                 ) {
                     Button(onClick = {
                         navController.navigate("tracker")
-                    }) { Text("Log In") }
+                    }) { Text("Log In ") }
                     Spacer(modifier = Modifier.padding(28.dp))
 
                     Button(onClick = {
