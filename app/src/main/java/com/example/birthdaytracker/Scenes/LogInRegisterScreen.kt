@@ -26,11 +26,15 @@ import com.example.birthdaytracker.Greeting
 import com.example.birthdaytracker.ui.theme.BirthdayTrackerTheme
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.birthdaytracker.NavRoutes
 
-var logIn = true;
 
 @Composable
-fun WelcomeScreen() {
+fun LogIn(initialLogInState: Boolean, navController: NavHostController) {
+    var logIn by remember { mutableStateOf(initialLogInState) }
     var email by remember { mutableStateOf(" ") }
     var password by remember { mutableStateOf(" ") }
     var confirmPassword by remember { mutableStateOf(" ") }
@@ -66,12 +70,12 @@ fun WelcomeScreen() {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(onClick = {
-                        logIn = false;
+                        navController.navigate("tracker")
                     }) { Text("Log In") }
                     Spacer(modifier = Modifier.padding(28.dp))
 
                     Button(onClick = {
-                        logIn = false;
+                        logIn = false
                     }) { Text("Register") }
                 }
             } else {
@@ -101,12 +105,12 @@ fun WelcomeScreen() {
                 ) {
                     Button(onClick = {
                         //TODO
-                        logIn = false;
+                        logIn = false
                     }) { Text("Register") }
                     Spacer(modifier = Modifier.padding(28.dp))
 
                     Button(onClick = {
-                        logIn = true;
+                        logIn = true
                     }) { Text("Log In") }
                 }
             }
@@ -116,27 +120,27 @@ fun WelcomeScreen() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun WelcomeScreenPreview() {
-    BirthdayTrackerTheme {
-        WelcomeScreen()
-    }
-}
-@Preview(showBackground = true, showSystemUi = true,
-    device = "spec:width=411dp,height=891dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape")
-@Composable
-fun WelcomeScreenPreviewLandscape() {
-    BirthdayTrackerTheme {
-        WelcomeScreen()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun WelcomeScreenPreview2() {
-    BirthdayTrackerTheme {
-        WelcomeScreen()
-        logIn = false;
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun WelcomeScreenPreview() {
+//    BirthdayTrackerTheme {
+//        LogIn(true, navController)
+//    }
+//}
+//@Preview(showBackground = true, showSystemUi = true,
+//    device = "spec:width=411dp,height=891dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape")
+//@Composable
+//fun WelcomeScreenPreviewLandscape() {
+//    BirthdayTrackerTheme {
+//        LogIn(true)
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun WelcomeScreenPreview2() {
+//    BirthdayTrackerTheme {
+//        LogIn(false)
+//
+//    }
+//}

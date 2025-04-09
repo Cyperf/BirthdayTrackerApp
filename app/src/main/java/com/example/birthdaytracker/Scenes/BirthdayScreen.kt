@@ -14,7 +14,7 @@ import com.example.birthdaytracker.ui.theme.BirthdayTrackerTheme
 
 
 @Composable
-fun BirthdayTrackerScreen(modifier: Modifier = Modifier) {
+fun Tracker(modifier: Modifier = Modifier) {
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
@@ -31,7 +31,7 @@ fun BirthdayTrackerScreen(modifier: Modifier = Modifier) {
 @Composable
 fun BDayScreenPreview() {
     BirthdayTrackerTheme() {
-        BirthdayTrackerScreen()
+        Tracker()
     }
 
 }
