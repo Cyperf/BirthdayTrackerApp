@@ -33,7 +33,7 @@ class FriendsRepository {
 
     fun getMyFriends(){
         Log.d("Kagemand","GetMyFriends")
-        birthDayTrackerService.getMyFriends().enqueue(object : Callback<List<Friend>> {
+        birthDayTrackerService.getAllFriends().enqueue(object : Callback<List<Friend>> {
             override fun onResponse(call: Call<List<Friend>>, response: Response<List<Friend>>) {
                 if (response.isSuccessful) {
                     //Log.d("APPLE", response.body().toString())

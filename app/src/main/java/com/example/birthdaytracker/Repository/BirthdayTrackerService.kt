@@ -10,7 +10,8 @@ import retrofit2.http.*
 interface BirthdayTrackerService {
 
     @GET("persons")
+    fun getAllFriends(): Call<List<Friend>>
+
+    @GET("persons?user_id={userId}")
     fun getMyFriends(): Call<List<Friend>>
-
-
 }
