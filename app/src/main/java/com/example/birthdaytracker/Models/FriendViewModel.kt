@@ -5,17 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import com.example.birthdaytracker.Repository.FriendsRepository
 
-class FriendViewModel: ViewModel() {
-    //private val repository = FriendsRepository()
+public class FriendViewModel: ViewModel() {
+    private val repository = FriendsRepository()
+    val friends: State<List<Friend>> = repository.friends
 
-   // fun getMyFriends(){
-        //repository.getMyFriends()
-    //}
 
-    private val _currentScreen = mutableStateOf("LogInRegisterScreen")
-    val currentScreen: State<String> get() = _currentScreen
-
-    fun navigateTo(screen: String){
-        _currentScreen.value = screen
+   fun getMyFriends(){
+        repository.getMyFriends()
     }
 }

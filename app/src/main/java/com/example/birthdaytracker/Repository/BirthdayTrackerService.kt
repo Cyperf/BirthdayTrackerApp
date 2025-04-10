@@ -9,7 +9,7 @@ import retrofit2.http.*
 
 interface BirthdayTrackerService {
 
-    @GET("birthDates")
+    @GET("persons")
     fun getMyFriends(): Call<List<Friend>>
 
 

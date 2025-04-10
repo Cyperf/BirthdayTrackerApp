@@ -32,17 +32,19 @@ class FriendsRepository {
     }
 
     fun getMyFriends(){
+        Log.d("Kagemand","GetMyFriends")
         birthDayTrackerService.getMyFriends().enqueue(object : Callback<List<Friend>> {
             override fun onResponse(call: Call<List<Friend>>, response: Response<List<Friend>>) {
                 if (response.isSuccessful) {
                     //Log.d("APPLE", response.body().toString())
                     val friendsList: List<Friend>? = response.body()
+                    Log.d("Kagemand",friendsList.toString())
                     friends.value = friendsList ?: emptyList()
                     errorMessage.value = ""
                 } else {
                     val message = response.code().toString() + " " + response.message()
                     errorMessage.value = message
-                    Log.e("APPLE", message)
+                    Log.e("Kagemand", message)
                 }
             }
 
