@@ -21,15 +21,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import android.util.Log
 
 
 @Composable
-fun LogIn(initialLogInState: Boolean, navController: NavHostController) {
+fun LogIn(initialLogInState: Boolean, navController: NavHostController, onLogin: (email: String)-> Unit) {
     var logIn by remember { mutableStateOf(initialLogInState) }
-    var email by remember { mutableStateOf(" ") }
-    var password by remember { mutableStateOf(" ") }
-    var confirmPassword by remember { mutableStateOf(" ") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
     Scaffold { innerPadding ->
         Column(
@@ -62,7 +64,9 @@ fun LogIn(initialLogInState: Boolean, navController: NavHostController) {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(onClick = {
-                        navController.navigate("tracker")
+                        Log.d("Kagemand", "The email is: "+email)
+                        onLogin(email)
+
                     }) { Text("Log In ") }
                     Spacer(modifier = Modifier.padding(28.dp))
 

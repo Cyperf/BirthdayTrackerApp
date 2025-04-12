@@ -1,7 +1,6 @@
 package com.example.birthdaytracker.Models
 
 import androidx.lifecycle.ViewModel
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import com.example.birthdaytracker.Repository.FriendsRepository
 
@@ -10,7 +9,11 @@ public class FriendViewModel: ViewModel() {
     val friends: State<List<Friend>> = repository.friends
 
 
-   fun getMyFriends(){
-        repository.getMyFriends()
+   fun getAllFriends(){
+        repository.getAllFriends()
+    }
+
+    fun getMyFriends(userId: String){
+        repository.getMyFriends(userId)
     }
 }

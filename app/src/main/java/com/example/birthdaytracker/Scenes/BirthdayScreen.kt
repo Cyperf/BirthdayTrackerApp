@@ -25,7 +25,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.ui.unit.dp
 
-private val viewModel  = FriendViewModel()
+//val viewModel  = FriendViewModel()
 @Composable
 fun Tracker(modifier: Modifier = Modifier, friends: List<Friend>) {
     Scaffold { innerPadding ->
@@ -36,6 +36,7 @@ fun Tracker(modifier: Modifier = Modifier, friends: List<Friend>) {
         )
         {
 
+            Log.d("Kagemand",friends.toString())
             FriendList(friends)
                     Text("I have " + friends.count() + " friends")
                 }

@@ -14,6 +14,7 @@ import com.example.birthdaytracker.Models.FriendViewModel
 import com.example.birthdaytracker.Scenes.LogIn
 import com.example.birthdaytracker.Scenes.Tracker
 import com.example.birthdaytracker.ui.theme.BirthdayTrackerTheme
+import android.util.Log
 
 
 class MainActivity : ComponentActivity() {
@@ -40,10 +41,12 @@ fun Greeting() {
     {
         composable(NavRoutes.LogIn.route)
         {
-            LogIn(true, navController)
+            LogIn(true, navController, {email->viewModel.getMyFriends(email); navController.navigate("tracker")})
         }
         composable(NavRoutes.Tracker.route)
         {
+            Log.d("Kagemande","FRIENDS "+friends.toString())
+            //viewModel.getMyFriends("")
             Tracker(
                 friends = friends,
             )
