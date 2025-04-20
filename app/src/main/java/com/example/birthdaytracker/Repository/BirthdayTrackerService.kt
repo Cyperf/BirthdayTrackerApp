@@ -12,4 +12,11 @@ interface BirthdayTrackerService {
 
     @GET("persons")
     fun getMyFriends(@Query("user_id") userId: String): Call<List<Friend>>?
+
+    @POST("persons")
+    fun createFriend(@Body friend: Friend): Call<Friend>
+
+    @DELETE("persons/{id}")
+    fun deleteFriend(@Path("id") id: Int): Call<Friend>
+
 }

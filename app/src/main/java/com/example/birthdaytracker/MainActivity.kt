@@ -23,12 +23,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BirthdayTrackerTheme {
-                    Greeting()
-                }
+                Greeting()
             }
         }
     }
-
+}
 
 
 @Composable
@@ -39,24 +38,45 @@ fun Greeting() {
 
     NavHost(navController = navController, startDestination = NavRoutes.LogIn.route)
     {
-        composable(NavRoutes.LogIn.route)
+        composable(
+            NavRoutes.LogIn.route
+        )
         {
-            LogIn(true, navController, {email->viewModel.getMyFriends(email); navController.navigate("tracker")})
+            LogIn(
+                true, navController, user = viewModel.user,
+                onLogin =
+                    { email, password, onError ->
+                        viewModel.signIn(email, password, onError = onError)
+                        viewModel.getMyFriends(email)
+                    },
+                onRegister =
+                    { email, password -> viewModel.register(email, password) },
+                onSuccess = {
+                    navController.navigate("tracker")
+                })
+
         }
-        composable(NavRoutes.Tracker.route)
+        composable(
+            NavRoutes.Tracker.route
+        )
         {
-            Log.d("Kagemande","FRIENDS "+friends.toString())
-            //viewModel.getMyFriends("")
+            Log.d("Kagemande", "FRIENDS " + friends.toString())
+
             Tracker(
                 friends = friends,
+                viewModel = viewModel,
+                onDelete = { id -> viewModel.deleteFriend(id); },
+                goBack = { -> navController.popBackStack(); },
+                user = viewModel.user
             )
+
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun     GreetingPreview() {
+fun GreetingPreview() {
     BirthdayTrackerTheme {
         Greeting()
     }

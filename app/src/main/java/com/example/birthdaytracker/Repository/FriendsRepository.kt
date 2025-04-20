@@ -1,11 +1,15 @@
 package com.example.birthdaytracker.Repository
 
+import android.R.attr.level
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.birthdaytracker.Models.Friend
 import com.example.birthdaytracker.Scenes.Tracker
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,12 +27,20 @@ class FriendsRepository {
 
 
     init {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
         //val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
         val build: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create()) // GSON
             //.addConverterFactory(KotlinJsonAdapterFactory)
             //.addConverterFactory(MoshiConverterFactory.create(moshi)) // Moshi, added to Gradle dependencies
+            .client(client)
             .build()
         birthDayTrackerService = build.create(BirthdayTrackerService::class.java)
         //getMyFriends("anbo@zealand.dk")
@@ -87,6 +99,56 @@ class FriendsRepository {
                 errorMessage.value = message
                 Log.d("APPLE", message)
             }
+        })
+    }
+
+    fun createFriend(friend: Friend){
+        Log.d("Kagemand","Creating Friend: "+friend)
+        birthDayTrackerService.createFriend(friend).enqueue(object : Callback<Friend> {
+            override fun onResponse(call: Call<Friend>, response: Response<Friend>) {
+                if (response.isSuccessful) {
+                    Log.d("Kagemand", "Created: "+response.body().toString())
+                    getMyFriends(friend.userId)
+                    errorMessage.value = ""
+                } else {
+                    val message = response.code().toString() + " " + response.message() + " " + response.body() + " " + friend
+                    errorMessage.value = message
+                    Log.d("Kagemanddød", message)
+                }
+            }
+
+            override fun onFailure(
+                call: Call<Friend?>,
+                t: Throwable
+            ) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    fun deleteFriend(id: Int){
+        Log.d("Kagemand","Deleting Friend: ")
+        birthDayTrackerService.deleteFriend(id).enqueue(object : Callback<Friend> {
+            override fun onResponse(call: Call<Friend>, response: Response<Friend>) {
+                if (response.isSuccessful) {
+                    Log.d("Kagemand", "Created: "+response.body().toString())
+                    getMyFriends(friends.value.firstOrNull()?.userId ?: "")
+                    errorMessage.value = ""
+                } else {
+                    val message = response.code().toString() + " " + response.message() + " " + response.body() + " "
+                    errorMessage.value = message
+                    Log.d("Kagemanddød", message)
+                }
+            }
+
+            override fun onFailure(
+                call: Call<Friend?>,
+                t: Throwable
+            ) {
+                TODO("Not yet implemented")
+            }
+
         })
     }
 }

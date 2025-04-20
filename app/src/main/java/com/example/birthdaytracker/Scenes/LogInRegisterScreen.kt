@@ -24,97 +24,122 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
+import com.google.firebase.auth.FirebaseUser
 
 
 @Composable
-fun LogIn(initialLogInState: Boolean, navController: NavHostController, onLogin: (email: String)-> Unit) {
-    var logIn by remember { mutableStateOf(initialLogInState) }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
-    Scaffold { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        )
-        {
-            if (logIn) {
-                Text(text = "Log In", style = MaterialTheme.typography.headlineLarge)
-
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Enter E-mail") }
-                )
-
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Enter Password") }
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(onClick = {
-                        Log.d("Kagemand", "The email is: "+email)
-                        onLogin(email)
-
-                    }) { Text("Log In ") }
-                    Spacer(modifier = Modifier.padding(28.dp))
-
-                    Button(onClick = {
-                        logIn = false
-                    }) { Text("Register") }
-                }
-            } else {
-                Text(text = "Register", style = MaterialTheme.typography.headlineLarge)
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Enter E-mail") }
-                )
-
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Enter Password") }
-                )
-                OutlinedTextField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    label = { Text("Confirm Password") }
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(onClick = {
-                        //TODO
-                        logIn = false
-                    }) { Text("Register") }
-                    Spacer(modifier = Modifier.padding(28.dp))
-
-                    Button(onClick = {
-                        logIn = true
-                    }) { Text("Log In") }
-                }
-            }
-
-
+fun LogIn(
+    initialLogInState: Boolean,
+    navController: NavHostController,
+    onRegister: (email: String,password: String) -> Unit,
+    onLogin: (email: String,password: String, onError: (String) -> Unit) -> Unit,
+    onSuccess: () -> Unit,
+    user: FirebaseUser? = null,
+) {
+    if (user != null) {
+        // https://developer.android.com/develop/ui/compose/side-effects
+        LaunchedEffect(Unit) {
+            onSuccess()
         }
     }
-}
+        var logIn by remember { mutableStateOf(initialLogInState) }
+        var email by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+        var confirmPassword by remember { mutableStateOf("") }
+        var errorMessage by remember { mutableStateOf("") }
+
+        Scaffold { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            )
+            {
+                if (logIn) {
+                    Text(text = "Log In", style = MaterialTheme.typography.headlineLarge)
+
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text("Enter E-mail") }
+                    )
+
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = { Text("Enter Password") }
+                    )
+                    Text(errorMessage,color = Color.Red)
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    )
+                    {
+                        Button(onClick = {
+                            Log.d("Kagemand", "The email is: " + email)
+                            onLogin(email, password) { message -> errorMessage = message }
+
+                        }, enabled = email.isNotBlank() && password.isNotBlank()) { Text("Log In ")}
+
+                        Spacer(modifier = Modifier.padding(28.dp))
+
+                        Button(onClick = {
+                            logIn = false
+                        }) { Text("Register") }
+                    }
+                } else {
+
+                    Text(text = "Register", style = MaterialTheme.typography.headlineLarge)
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text("Enter E-mail") }
+                    )
+
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = { Text("Enter Password") }
+                    )
+                    OutlinedTextField(
+                        value = confirmPassword,
+                        onValueChange = { confirmPassword = it },
+                        label = { Text("Confirm Password") }
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Button(onClick = {
+                            Log.d("password: confirmpassword", password + ": " + confirmPassword)
+                            if (password == confirmPassword) {
+                                onRegister(email, password)
+                            } else {
+                            }
+                        }) { Text("Register") }
+                        Spacer(modifier = Modifier.padding(28.dp))
+
+                        Button(onClick = {
+                            logIn = true
+                        }) { Text("Log In") }
+                    }
+                }
+
+
+            }
+        }
+    }
+
 
 //@Preview(showBackground = true)
 //@Composable
