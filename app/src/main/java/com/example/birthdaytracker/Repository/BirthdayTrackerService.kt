@@ -19,4 +19,12 @@ interface BirthdayTrackerService {
     @DELETE("persons/{id}")
     fun deleteFriend(@Path("id") id: Int): Call<Friend>
 
+    @GET("persons")
+    fun sortMyFriends(@Query("user_id") userId: String, @Query("sort_by") sortBy: String,): Call<List<Friend>>?
+
+    @GET("persons")
+    fun filterMyFriends(@Query("user_id") userId: String, @Query("name_fragment") nameContains: String, @Query("age_below") belowAe: Int?, @Query("age_above") aboveAge: Int?): Call<List<Friend>>?
+
+
+
 }

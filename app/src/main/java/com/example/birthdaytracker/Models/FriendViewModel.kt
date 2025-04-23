@@ -6,8 +6,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.navigation.compose.rememberNavController
-import com.example.birthdaytracker.NavRoutes
 import com.example.birthdaytracker.Repository.FriendsRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -36,6 +34,14 @@ public class FriendViewModel : ViewModel() {
 
     fun deleteFriend(id: Int) {
         repository.deleteFriend(id)
+    }
+
+    fun sortMyFriend(userId: String, sortBy: String) {
+        repository.sortMyFriend(userId, sortBy)
+    }
+
+    fun filterMyFriend(userId: String, nameContains: String, ageBelow: Int?, ageAbove: Int?) {
+        repository.filterMyFriend(userId, nameContains,ageBelow,ageAbove)
     }
 
     fun signIn(email: String, password: String, onError: (String) -> Unit) {
